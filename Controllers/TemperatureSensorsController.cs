@@ -5,8 +5,7 @@ namespace DivicesSesorApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TemperatureSensorsController
-        : ControllerBase
+    public class TemperatureSensorsController : ControllerBase
     {
         private readonly TemperatureSensorService _service;
 

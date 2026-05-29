@@ -13,8 +13,7 @@ namespace DivicesSesorApi.Repositories
             _dbConnectionFactory = dbConnectionFactory;
         }
 
-        public async Task<IEnumerable<TemperatureSensorModel>>
-            GetLastSensorsAsync()
+        public async Task<IEnumerable<TemperatureSensorModel>> GetLastSensorsAsync()
         {
             const string sql = """
                 SELECT *

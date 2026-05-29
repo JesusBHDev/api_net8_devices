@@ -7,11 +7,17 @@ Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// se agrega inyecccion de dependencias, esta es la de la bd Esto es Dependency Injection
+/*"Oye .NET...
+si alguien pide:
+IDbConnectionFactory
+entrégale:
+DataBaseConnection"
+ */
 builder.Services.AddSingleton<IDbConnectionFactory, DataBaseConnection>();
 
-builder.Services.AddScoped<TemperatureSensorRepository>();
 
+builder.Services.AddScoped<TemperatureSensorRepository>();
 builder.Services.AddScoped<TemperatureSensorService>();
 
 builder.Services.AddControllers();
