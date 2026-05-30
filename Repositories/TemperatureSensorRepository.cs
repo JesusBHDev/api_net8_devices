@@ -4,27 +4,38 @@ using DivicesSesorApi.Models;
 
 namespace DivicesSesorApi.Repositories
 {
+    //aqui esta SQL,dapper conexion ala bd
     public class TemperatureSensorRepository
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
 
+       
         public TemperatureSensorRepository(IDbConnectionFactory dbConnectionFactory)
         {
+            //Entonces .NET pregunta: "¿Quién implementa IDbConnectionFactory?" 
+            // y recibe DataBaseConnection  porque se registro AddSingleton<IDbConnectionFactory, DataBaseConnection>()
             _dbConnectionFactory = dbConnectionFactory;
         }
 
         public async Task<IEnumerable<TemperatureSensorModel>> GetLastSensorsAsync()
         {
+            //query
             const string sql = """
                 SELECT *
                 FROM temperature_sensors
                 ORDER BY id DESC
                 LIMIT 5;
                 """;
+
+            //abre y cierra automaticamente la conexion using "Cuando termines, cierra/libera la conexión"
             using var connection = _dbConnectionFactory.CreateConnection();
 
-            return await connection.QueryAsync<
-                TemperatureSensorModel>(sql);
+            //Aquí entra Dapper.
+            //1 Aquí entra Dapper.
+            // 2 PostgreSQL devuelve filas. ejemplo id | sensor_name | last_temperature
+            //Dapper convierte filas → objetos C#. por esto <TemperatureSensorModel>
+            return await connection.QueryAsync<TemperatureSensorModel>(sql);
+            //await Porque PostgreSQL tarda un poco. y pues devuelve los datos
         }
     }
 }

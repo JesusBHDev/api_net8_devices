@@ -3,23 +3,43 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DivicesSesorApi.Controllers
 {
-    [Route("api/[controller]")]
+    //aqui llega la peticion
+    [Route("api/temperature-sensors")] 
     [ApiController]
     public class TemperatureSensorsController : ControllerBase
     {
         private readonly TemperatureSensorService _service;
 
+
+        //Tu constructor pide esto: TemperatureSensorService service
+        //"Necesito un TemperatureSensorService para poder crear el controller"
+        // se hace en automaticio var service = new TemperatureSensorService(...);
+        //porque se ordeno en program 
         public TemperatureSensorsController(TemperatureSensorService service)
         {
             _service = service;
         }
 
+        //el get se ejecuta aqui 
         [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            var sensors = await _service.GetLastSensorsAsync();
+        public async Task<IActionResult> Get() //"Este método trabajará de forma asíncrona"
+        {//Que NO bloquea el hilo mientras espera algo lento.
+         //Un Task representa: "Una operación que terminará en el futuro" tarea
+         //Qué es IActionResult?Es un tipo de respuesta HTTP. Gracias a IActionResult puedes devolver:
+         //Ok() NotFound() etc en palabras  simples "Algún tipo de respuesta HTTP"
 
+
+            //"Espera el resultado del Task" 
+            //el service devuelve Task<IEnumerable<TemperatureSensorModel>> 
+            //"Te daré los sensores después" 
+            var sensors = await _service.GetLastSensorsAsync();
+            //Sin await tendrías esto var sensors = _service.GetLastSensorsAsync();
+            //Pero ahí sensors NO sería la lista.Sería un Task
+            // Con await esperas el resultado real.
+
+            //¿Qué hace Ok()? Crea una respuesta HTTP 200.
             return Ok(sensors);
+            //Crea una respuesta HTTP 200.ASP.NET automáticamente convierte: json 
         }
     }
 }
