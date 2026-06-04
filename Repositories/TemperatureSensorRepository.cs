@@ -21,8 +21,9 @@ namespace DivicesSesorApi.Repositories
         {
             //query
             const string sql = """
-                SELECT *
-                FROM temperature_sensors
+                SELECT * 
+                FROM
+                temperature_sensors
                 ORDER BY id DESC
                 LIMIT 5;
                 """;
@@ -36,6 +37,18 @@ namespace DivicesSesorApi.Repositories
             //Dapper convierte filas → objetos C#. por esto <TemperatureSensorModel>
             return await connection.QueryAsync<TemperatureSensorModel>(sql);
             //await Porque PostgreSQL tarda un poco. y pues devuelve los datos
+        }
+
+        public async Task<IEnumerable<InformationSensor>> GetInformationSesorBasic()
+        {
+            const string sql = """
+                Select id, sensor_name, description
+                from temperature_sensors order by id desc limit 5
+                """;
+
+            using var connetion = _dbConnectionFactory.CreateConnection();
+
+            return await connetion.QueryAsync<InformationSensor>(sql);
         }
     }
 }

@@ -26,5 +26,10 @@ namespace DivicesSesorApi.Services
             //el service no sabe sql, dapper, controlador solo sabe pedir sensores y recibir
             return await _repository.GetLastSensorsAsync();
         }
+
+        public async Task<IEnumerable<InformationSensor>> GetInformationEsential()
+        {
+            return await _repository.GetInformationSesorBasic();
+        }
     }
 }

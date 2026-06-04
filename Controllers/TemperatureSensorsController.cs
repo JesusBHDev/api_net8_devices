@@ -1,10 +1,11 @@
 ﻿using DivicesSesorApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace DivicesSesorApi.Controllers
 {
     //aqui llega la peticion
-    [Route("api/temperature-sensors")] 
+    [Route("temperature-sensor")]
     [ApiController]
     public class TemperatureSensorsController : ControllerBase
     {
@@ -21,7 +22,7 @@ namespace DivicesSesorApi.Controllers
         }
 
         //el get se ejecuta aqui 
-        [HttpGet]
+        [HttpGet("all-information")]
         public async Task<IActionResult> Get() //"Este método trabajará de forma asíncrona"
         {//Que NO bloquea el hilo mientras espera algo lento.
          //Un Task representa: "Una operación que terminará en el futuro" tarea
@@ -41,5 +42,14 @@ namespace DivicesSesorApi.Controllers
             return Ok(sensors);
             //Crea una respuesta HTTP 200.ASP.NET automáticamente convierte: json 
         }
+
+        [HttpGet("basic-information")]
+        public async Task<IActionResult> get()
+        {
+            var sensors = await _service.GetInformationEsential();
+
+            return Ok(sensors);
+        }
+
     }
 }

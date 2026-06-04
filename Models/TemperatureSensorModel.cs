@@ -13,4 +13,11 @@ namespace DivicesSesorApi.Models
         public DateTime? LastReportAt { get; set; }
         public DateTime CreatedAt { get; set; }
     }
+
+    public class InformationSensor
+    {
+        public string SensorName { get; set; }
+        public string Description { get; set; } 
+        public decimal LastTemperature { get; set; }
+    }
 }
