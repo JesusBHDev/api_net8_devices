@@ -1,4 +1,5 @@
-﻿using DivicesSesorApi.Services;
+﻿using DivicesSesorApi.Models;
+using DivicesSesorApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 
@@ -49,6 +50,25 @@ namespace DivicesSesorApi.Controllers
             var sensors = await _service.GetInformationEsential();
 
             return Ok(sensors);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var sensor = await _service.GetByIdAsycn(id);
+
+            if (sensor == null)
+                return NotFound();
+
+            return Ok(sensor);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] SensorRegister sensor)
+        {
+            var id = await _service.InsertSensor(sensor);
+
+            return CreatedAtAction(nameof(GetById), new { id }, new { id });
         }
 
     }

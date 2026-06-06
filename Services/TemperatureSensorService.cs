@@ -31,5 +31,17 @@ namespace DivicesSesorApi.Services
         {
             return await _repository.GetInformationSesorBasic();
         }
+
+        public async Task<TemperatureSensorModel?>GetByIdAsycn(int id)
+        {
+            return await _repository.GetByAsync(id);
+        }
+
+       public async Task<int> InsertSensor(SensorRegister sensor)
+        {
+            return await _repository.InsertSensor(sensor);
+        }
+
+            
     }
 }

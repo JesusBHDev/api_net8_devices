@@ -9,7 +9,7 @@ namespace DivicesSesorApi.Repositories
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
 
-       
+
         public TemperatureSensorRepository(IDbConnectionFactory dbConnectionFactory)
         {
             //Entonces .NET pregunta: "¿Quién implementa IDbConnectionFactory?" 
@@ -50,5 +50,53 @@ namespace DivicesSesorApi.Repositories
 
             return await connetion.QueryAsync<InformationSensor>(sql);
         }
+    
+        public async Task<TemperatureSensorModel?> GetByAsync(int id)
+        {
+            const string sql = """
+                Select * from 
+                temperature_sensors 
+                where id = @id;
+                """;
+
+            using var connection = _dbConnectionFactory.CreateConnection();
+
+            return await connection.QueryFirstOrDefaultAsync<TemperatureSensorModel>(sql, new { Id = id });
+
+        }
+
+        public async Task<int> InsertSensor(SensorRegister sensor)
+        {
+            const string sql = """
+        INSERT INTO temperature_sensors
+        (
+            sensor_name,
+            description,
+            ip_address,
+            is_online,
+            last_temperature,
+            last_report_at,
+            created_at
+        )
+        VALUES
+        (
+            @SensorName,
+            @Description,
+            '0.0.0.0',
+            @IsOnline,
+            NULL,
+            NULL,
+            CURRENT_TIMESTAMP
+        )
+        RETURNING id;
+        """;
+
+            using var connection = _dbConnectionFactory.CreateConnection();
+
+            return await connection.QuerySingleAsync<int>(sql, sensor);
+        }
+
+
+
     }
 }

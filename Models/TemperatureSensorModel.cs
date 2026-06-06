@@ -20,4 +20,12 @@ namespace DivicesSesorApi.Models
         public string Description { get; set; } 
         public decimal LastTemperature { get; set; }
     }
+
+    public class SensorRegister
+    {
+        public string SensorName { get; set; }
+        public string? Description { get; set; }
+        public bool IsOnline { get; set; }
+
+    }
 }
