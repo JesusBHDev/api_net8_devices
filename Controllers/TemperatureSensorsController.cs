@@ -26,7 +26,7 @@ namespace DivicesSesorApi.Controllers
         [HttpGet("all-information")]
         public async Task<IActionResult> Get() //"Este método trabajará de forma asíncrona"
         {//Que NO bloquea el hilo mientras espera algo lento.
-         //Un Task representa: "Una operación que terminará en el futuro" tarea
+         //Un2 Task representa: "Una operación que terminará en el futuro" tarea
          //Qué es IActionResult?Es un tipo de respuesta HTTP. Gracias a IActionResult puedes devolver:
          //Ok() NotFound() etc en palabras  simples "Algún tipo de respuesta HTTP"
 
@@ -71,5 +71,18 @@ namespace DivicesSesorApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id }, new { id });
         }
 
+        [HttpPut("update-sensor/{id}")]
+        public async Task<IActionResult> Update(int id,[FromBody] SensorUpdate sensor)
+        {
+            sensor.SensorId = id;
+
+            var rowsAffected = await _service.UpdateSensor(sensor);
+
+            if(rowsAffected == 0)
+                return NotFound();
+
+            return NoContent();
+        }
+      
     }
 }

@@ -38,10 +38,17 @@ namespace DivicesSesorApi.Services
         }
 
        public async Task<int> InsertSensor(SensorRegister sensor)
-        {
+       {
             return await _repository.InsertSensor(sensor);
+       }
+
+        public async Task<int> UpdateSensor(SensorUpdate sensor)
+        {
+            return await _repository.UpdateSensor(sensor);
         }
 
-            
+
+
+
     }
 }

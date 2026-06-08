@@ -28,4 +28,12 @@ namespace DivicesSesorApi.Models
         public bool IsOnline { get; set; }
 
     }
+
+    public class SensorUpdate
+    {
+        public int SensorId { get; set; }
+        public string? SensorName { get; set; }
+        public string? Description { get; set; }
+        public bool IsOnline { get; set; }
+    }
 }

@@ -96,6 +96,22 @@ namespace DivicesSesorApi.Repositories
             return await connection.QuerySingleAsync<int>(sql, sensor);
         }
 
+        public async Task<int> UpdateSensor(SensorUpdate sensor)
+        {
+            const string sql = """
+                Update  temperature_sensors 
+                set sensor_name = @SensorName, 
+                description = @Description,
+                is_online = @IsOnline
+                where id = @SensorId
+                """;
+
+            using var connection = _dbConnectionFactory.CreateConnection();
+
+            return await connection.ExecuteAsync(sql, sensor);
+
+        }
+
 
 
     }
