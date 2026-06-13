@@ -1,5 +1,6 @@
 ﻿using DivicesSesorApi.Models;
 using DivicesSesorApi.Repositories;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace DivicesSesorApi.Services
 {
@@ -16,6 +17,7 @@ namespace DivicesSesorApi.Services
         public TemperatureSensorService(TemperatureSensorRepository repository)
         {
             _repository = repository;
+
         }
 
         //en el controlador se manda a llamar _service.GetLastSensorsAsync()
@@ -39,6 +41,15 @@ namespace DivicesSesorApi.Services
 
        public async Task<int> InsertSensor(SensorRegister sensor)
        {
+            if (string.IsNullOrEmpty(sensor.SensorName))
+                throw new ArgumentException("El nombre del sensor no puede estar vacio");
+
+            if (sensor.SensorName.Length > 50)
+                throw new ArgumentException("El nombre del sensor es muy largo");
+
+            if(await _repository.ExistsByNameAsync(sensor.SensorName))
+                throw new ArgumentException("Ya existe un sensor con ese nombre");
+
             return await _repository.InsertSensor(sensor);
        }
 

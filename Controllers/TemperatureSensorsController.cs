@@ -55,6 +55,9 @@ namespace DivicesSesorApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
+            if(id <= 0)
+                return BadRequest();
+
             var sensor = await _service.GetByIdAsycn(id);
 
             if (sensor == null)
@@ -74,6 +77,9 @@ namespace DivicesSesorApi.Controllers
         [HttpPut("update-sensor/{id}")]
         public async Task<IActionResult> Update(int id,[FromBody] SensorUpdate sensor)
         {
+            if (id <= 0)
+                return BadRequest();
+
             sensor.SensorId = id;
 
             var rowsAffected = await _service.UpdateSensor(sensor);

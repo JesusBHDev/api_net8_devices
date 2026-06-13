@@ -65,6 +65,20 @@ namespace DivicesSesorApi.Repositories
 
         }
 
+        public async Task<bool> ExistsByNameAsync(string sensorName)
+        {
+            const string sql = """
+                                SELECT EXISTS( SELECT 1
+                                From temperature_sensors
+                                Where sensor_name = @SensorName);
+                                """;
+
+            using var connection = _dbConnectionFactory.CreateConnection();
+
+            return await connection.QuerySingleAsync<bool>(sql, new {SensorName = sensorName});
+        }
+
+
         public async Task<int> InsertSensor(SensorRegister sensor)
         {
             const string sql = """
